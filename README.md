@@ -5,6 +5,7 @@ Have you ever wanted to have a sweet table of contents for your markdown file bu
 1. [Usage](#usage)
 2. [Configuration](#configuration)
 3. [Example](#example)
+4. [Installation](#installation)
 
 ## Usage
 
@@ -39,4 +40,16 @@ Some other content can go here if you want
 Because we know you do what you want
 
 #### This is totally like inception
+```
+
+## Installation
+
+You can use your favorite vim package manage but here are a few for your convenience.
+
+```vimscript
+" plug.vim
+Plug 'ajorgensen/vim-markdown-toc'
+
+" Vundle
+Plugin 'ajorgensen/vim-markdown-toc'
 ```
