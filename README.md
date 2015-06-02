@@ -1,6 +1,6 @@
 # markdown-toc.vim
 
-Every wanted to have a sweet table of contents for your markdown file but didn't want to deal with the pain of generating it yourself? Well now you dont have to.
+Have you ever wanted to have a sweet table of contents for your markdown file but didn't want to deal with the pain of generating it yourself? Well now you dont have to.
 
 1. [Usage](#usage)
 2. [Configuration](#configuration)
@@ -8,7 +8,7 @@ Every wanted to have a sweet table of contents for your markdown file but didn't
 
 ## Usage
 
-* Run `:GenerateMarkdownTOC` to generate the table of contents for the markdown file. This will place the generated table of contents at the location of your cursor at the time that you run the command.
+* Run `:GenerateMarkdownTOC` to generate the table of contents for an open markdown file. This will place the generated table of contents at the location of your cursor at the time that you run the command.
   * Supports both `#` and `==`/`--` styles of header declarations
 
 ## Configuration
