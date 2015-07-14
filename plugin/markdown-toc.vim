@@ -2,6 +2,14 @@ if !exists("g:mdtoc_starting_header_level")
   let g:mdtoc_starting_header_level = 2
 endif
 
+if !exists("g:mdtoc_run_on_save")
+  let g:mdtoc_run_on_save = 0
+endif
+
+if (g:mdtoc_run_on_save == 1)
+  autocmd BufWritePre *.md :GenerateMarkdownTOC
+endif
+
 function! s:HeaderSearchRegex()
   if(g:mdtoc_starting_header_level == 1)
     return "^[#]\\{" . g:mdtoc_starting_header_level . ",}\\|.*\\n^[-=]\\{2,}"
@@ -67,4 +75,46 @@ function! s:GenerateMarkdownTOC()
   endfor
 endfunction
 
-command! GenerateMarkdownTOC :call <SID>GenerateMarkdownTOC()
+function! s:FormatTOCEntry(sectionName)
+  return "[" . a:sectionName .  "](#" .  substitute(tolower(a:sectionName), " ", "-", "g") . ")"
+endfunction
+
+function! s:ExtractHeaderText(header)
+  return join(split(a:header, " ")[1:-1], " ")
+endfunction
+
+function! s:DeleteExistingTOC()
+  let l:winview = winsaveview()
+  normal! gg
+
+  let l:headerMatches = <SID>FindHeaders()
+  let l:firstEntry = <SID>FormatTOCEntry(<SID>ExtractHeaderText(l:headerMatches[0]))
+  let l:firstEntryLineNumber = search("^\\t*\\d\\.\\s\\[.*\\]\\(.*\\)")
+
+  let l:lastEntry = <SID>FormatTOCEntry(<SID>ExtractHeaderText(l:headerMatches[-1]))
+  let l:lastEntryLineNumber = search("^\\t*\\d\\.\\s\\[.*\\]\\(.*\\)", 'b', line("}"))
+
+  if(l:firstEntryLineNumber <= l:lastEntryLineNumber && l:firstEntryLineNumber != 0 && l:lastEntryLineNumber != 0)
+    execute l:firstEntryLineNumber . "," . l:lastEntryLineNumber . "delete_"
+  endif
+
+  call winrestview(l:winview)
+
+  return l:firstEntryLineNumber
+endfunction
+
+function! s:TOCTest()
+  let l:winview = winsaveview()
+  let l:oldLineNumber = <SID>DeleteExistingTOC()
+
+  echo l:oldLineNumber
+
+  if (l:oldLineNumber != 0)
+    call cursor(l:oldLineNumber - 1, 1)
+  endif
+
+  exec <SID>GenerateMarkdownTOC()
+  call winrestview(l:winview)
+endfunction
+
+command! GenerateMarkdownTOC :call <SID>TOCTest()
