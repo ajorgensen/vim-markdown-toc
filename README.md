@@ -16,7 +16,7 @@ Have you ever wanted to have a sweet table of contents for your markdown file bu
 
 By default this plugin will not generate an entry for top level headers (`#` or `==`). You can modifying this behavior by setting `g:mdtoc_starting_header_level = 1`
 ```vimscript
-let g:mdtoc_starting_header_level = 2
+let g:mdtoc_starting_header_level = 1
 ```
 
 ## Example
