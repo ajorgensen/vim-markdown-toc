@@ -52,6 +52,7 @@ function! s:GenerateMarkdownTOC()
   for header in l:headerMatches
     let l:headingLevel = <SID>HeadingLevel(header)
     let l:sectionName = join(split(header, " ")[1:-1], " ")
+    let l:sectionId = substitute(substitute(tolower(sectionName), "[^a-z0-9_\\- ]", "", "g"), " ", "-", "g")
 
     if(l:headingLevel > l:previousLevel)
       call add(l:levelsStack, 1)
@@ -62,7 +63,7 @@ function! s:GenerateMarkdownTOC()
     let l:levelsStack[-1] = l:num + 1
     let l:previousLevel = l:headingLevel
 
-    let l:formattedLine = repeat("\t", l:headingLevel - g:mdtoc_starting_header_level) . l:num . ". [" . sectionName .  "](#" .  substitute(tolower(sectionName), " ", "-", "g") . ")"
+    let l:formattedLine = repeat("\t", l:headingLevel - g:mdtoc_starting_header_level) . l:num . ". [" . sectionName .  "](#" . sectionId  . ")"
     put =l:formattedLine
   endfor
 endfunction
